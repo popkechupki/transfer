@@ -1,0 +1,24 @@
+name: transfer
+main: net.comorevi.np.transfer.TransferPlugin
+version: 1.0.0
+load: POSTWORLD
+author: popkechupki
+api: ["1.0.9"]
+depend:
+  - FormAPI
+description: "mcservers.jpに載ってるサーバーなどに移動できる"
+
+commands:
+  transfer:
+    description: 他のサーバーへ移動する
+    aliases:
+      - stpui
+    usage: "/transfer"
+    permission: transfer.command.transfer
+permissions:
+  transfer:
+    children:
+      transfer.command:
+        children:
+          transfer.command.transfer:
+            default: true
