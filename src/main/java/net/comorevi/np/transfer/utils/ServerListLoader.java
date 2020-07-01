@@ -1,8 +1,8 @@
-package net.comorevi.np.transfer.util;
+package net.comorevi.np.transfer.utils;
 
 import com.google.gson.Gson;
-import net.comorevi.np.transfer.util.data.OnlineServerData;
-import net.comorevi.np.transfer.util.data.CategoryData;
+import net.comorevi.np.transfer.utils.data.OnlineServerData;
+import net.comorevi.np.transfer.utils.data.CategoryData;
 
 import java.net.URI;
 import java.net.http.HttpClient;

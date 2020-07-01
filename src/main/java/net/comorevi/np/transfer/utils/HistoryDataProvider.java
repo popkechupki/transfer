@@ -1,9 +1,9 @@
-package net.comorevi.np.transfer.util;
+package net.comorevi.np.transfer.utils;
 
 import cn.nukkit.Player;
 import cn.nukkit.utils.Config;
 import net.comorevi.np.transfer.TransferPlugin;
-import net.comorevi.np.transfer.util.data.HistoryData;
+import net.comorevi.np.transfer.utils.data.HistoryData;
 
 import java.io.File;
 import java.util.LinkedHashMap;
