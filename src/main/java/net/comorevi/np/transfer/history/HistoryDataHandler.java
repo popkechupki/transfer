@@ -1,9 +1,8 @@
-package net.comorevi.np.transfer.utils;
+package net.comorevi.np.transfer.history;
 
 import cn.nukkit.Player;
 import cn.nukkit.utils.Config;
 import net.comorevi.np.transfer.TransferPlugin;
-import net.comorevi.np.transfer.utils.data.HistoryData;
 
 import java.io.File;
 import java.util.LinkedHashMap;
@@ -11,8 +10,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class HistoryDataProvider {
-    private static final HistoryDataProvider instance = new HistoryDataProvider();
+public class HistoryDataHandler {
+    private static final HistoryDataHandler instance = new HistoryDataHandler();
 
     public void addHistoryData(Player player, String address, int port, String... name) {
         Config config = new Config(new File(TransferPlugin.getInstance().getDataFolder(), "config.yml"), Config.YAML);
@@ -54,7 +53,7 @@ public class HistoryDataProvider {
         return null;
     }
 
-    public static HistoryDataProvider getInstance() {
+    public static HistoryDataHandler getInstance() {
         return instance;
     }
 }

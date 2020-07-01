@@ -5,7 +5,7 @@ import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.network.protocol.TransferPacket;
 import cn.nukkit.plugin.PluginBase;
-import net.comorevi.np.transfer.form.FormHandler;
+import net.comorevi.np.transfer.form.FormManager;
 
 public class TransferPlugin extends PluginBase {
     private static TransferPlugin instance;
@@ -26,7 +26,7 @@ public class TransferPlugin extends PluginBase {
                 return true;
             }
 
-            FormHandler.getInstance().sendTransferHomeWindow((Player) sender);
+            FormManager.getInstance().sendTransferHomeWindow((Player) sender);
         }
         return true;
     }

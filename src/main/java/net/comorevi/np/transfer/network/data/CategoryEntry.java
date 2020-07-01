@@ -1,8 +1,10 @@
-package net.comorevi.np.transfer.utils.data;
+package net.comorevi.np.transfer.network.data;
+
+import net.comorevi.np.transfer.network.GsonEntry;
 
 import java.util.LinkedList;
 
-public class CategoryData {
+public class CategoryEntry extends GsonEntry {
     private LinkedList<Category> categories;
 
     public LinkedList<Category> getCategories() {
