@@ -1,4 +1,4 @@
-package net.comorevi.np.transfer.util.data;
+package net.comorevi.np.transfer.utils.data;
 
 import java.util.LinkedList;
 

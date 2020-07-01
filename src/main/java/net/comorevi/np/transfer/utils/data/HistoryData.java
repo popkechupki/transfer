@@ -1,4 +1,4 @@
-package net.comorevi.np.transfer.util.data;
+package net.comorevi.np.transfer.utils.data;
 
 public class HistoryData {
     private String name;
