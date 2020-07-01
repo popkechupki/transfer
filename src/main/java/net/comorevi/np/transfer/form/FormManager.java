@@ -7,7 +7,7 @@ import net.comorevi.np.transfer.TransferPlugin;
 import net.comorevi.np.transfer.history.HistoryDataHandler;
 import net.comorevi.np.transfer.network.ServerListLoader;
 import net.comorevi.np.transfer.history.HistoryData;
-import net.comorevi.np.transfer.network.data.OnlineServerEntry;
+import net.comorevi.np.transfer.network.entry.OnlineServerEntry;
 import ru.nukkitx.forms.elements.CustomForm;
 import ru.nukkitx.forms.elements.ImageType;
 import ru.nukkitx.forms.elements.ModalForm;

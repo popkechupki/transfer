@@ -1,7 +1,7 @@
 package net.comorevi.np.transfer.network;
 
 import com.google.gson.Gson;
-import net.comorevi.np.transfer.network.data.*;
+import net.comorevi.np.transfer.network.entry.*;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -43,12 +43,7 @@ public class ServerListLoader {
         }
         return categoryData.getCategories().get(i).getName();
     }
-
     private GsonEntry getGsonEntry(EnumJsonDataType dataType) throws ExecutionException, InterruptedException {
-        return getGsonEntry(dataType, 0);
-    }
-
-    private GsonEntry getGsonEntry(EnumJsonDataType dataType, int id) throws ExecutionException, InterruptedException {
         HttpClient httpClient = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder(URI.create(dataType.getBasicUrl()))
                 .timeout(Duration.ofSeconds(10))
@@ -72,5 +67,20 @@ public class ServerListLoader {
 
     public static ServerListLoader getInstance() {
         return instance;
+    }
+
+    public enum EnumJsonDataType {
+        ONLINE_LIST("https://mcservers.jp/api/v1/server/list/online"),
+        CATEGORY_LIST("https://mcservers.jp/api/v1/category/list");
+
+        private String url;
+
+        EnumJsonDataType(String url) {
+            this.url = url;
+        }
+
+        public String getBasicUrl() {
+            return url;
+        }
     }
 }

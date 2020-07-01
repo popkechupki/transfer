@@ -1,6 +1,4 @@
-package net.comorevi.np.transfer.network.data;
-
-import net.comorevi.np.transfer.network.GsonEntry;
+package net.comorevi.np.transfer.network.entry;
 
 import java.util.LinkedList;
 
