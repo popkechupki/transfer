@@ -15,7 +15,7 @@ import java.util.concurrent.ExecutionException;
 public class ServerListLoader {
     private static final ServerListLoader instance = new ServerListLoader();
 
-    public LinkedList<OnlineServerEntry.Server> getOnlineServerData() throws Exception {
+    public LinkedList<OnlineServerEntry.Server> getOnlineServers() throws Exception {
         return ((OnlineServerEntry) getGsonEntry(EnumJsonDataType.ONLINE_LIST)).getServerList();
     }
 

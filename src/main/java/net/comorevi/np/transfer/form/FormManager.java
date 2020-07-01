@@ -51,7 +51,7 @@ public class FormManager {
         player.sendMessage("[Transfer] データを取得しています...");
         LinkedList<OnlineServerEntry.Server> serverList;
         try {
-            serverList = ServerListLoader.getInstance().getOnlineServerData();
+            serverList = ServerListLoader.getInstance().getOnlineServers();
         } catch (Exception e) {
             sendTransferHomeWindow(player, TextFormat.RED + "サーバーリストへの接続に失敗しました。");
             return;
@@ -177,7 +177,7 @@ public class FormManager {
                     if (form.getResponse().getClickedButtonId() == 0) {
                         LinkedList<String> serverAddressList = new LinkedList<>();
                         try {
-                            ServerListLoader.getInstance().getOnlineServerData().forEach(s -> {
+                            ServerListLoader.getInstance().getOnlineServers().forEach(s -> {
                                 serverAddressList.add(s.getAddress());
                             });
                         } catch (Exception e) {
