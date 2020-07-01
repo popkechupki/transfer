@@ -4,10 +4,10 @@ import cn.nukkit.Player;
 import cn.nukkit.form.response.FormResponseCustom;
 import cn.nukkit.utils.TextFormat;
 import net.comorevi.np.transfer.TransferPlugin;
-import net.comorevi.np.transfer.utils.HistoryDataProvider;
-import net.comorevi.np.transfer.utils.ServerListLoader;
-import net.comorevi.np.transfer.utils.data.HistoryData;
-import net.comorevi.np.transfer.utils.data.OnlineServerData;
+import net.comorevi.np.transfer.history.HistoryDataHandler;
+import net.comorevi.np.transfer.network.ServerListLoader;
+import net.comorevi.np.transfer.history.HistoryData;
+import net.comorevi.np.transfer.network.data.OnlineServerEntry;
 import ru.nukkitx.forms.elements.CustomForm;
 import ru.nukkitx.forms.elements.ImageType;
 import ru.nukkitx.forms.elements.ModalForm;
@@ -15,8 +15,8 @@ import ru.nukkitx.forms.elements.SimpleForm;
 
 import java.util.LinkedList;
 
-public class FormHandler {
-    private static final FormHandler instance = new FormHandler();
+public class FormManager {
+    private static final FormManager instance = new FormManager();
 
     public void sendTransferHomeWindow(Player player, String... homeMessage) {
         new SimpleForm()
@@ -49,9 +49,9 @@ public class FormHandler {
 
     public void sendTransferListWindow(Player player) {
         player.sendMessage("[Transfer] データを取得しています...");
-        OnlineServerData servers;
+        LinkedList<OnlineServerEntry.Server> serverList;
         try {
-            servers = ServerListLoader.getInstance().getOnlineServerData();
+            serverList = ServerListLoader.getInstance().getOnlineServerData();
         } catch (Exception e) {
             sendTransferHomeWindow(player, TextFormat.RED + "サーバーリストへの接続に失敗しました。");
             return;
@@ -61,19 +61,19 @@ public class FormHandler {
                 .setTitle(TextFormat.GREEN + "MCServers" + TextFormat.RESET + ".JP")
                 .setContent("移動先のサーバーを選択");
 
-        servers.getServerList().forEach(server -> {
+        serverList.forEach(server -> {
             if (server.getIs_display_address() == 1 && server.getIs_verified() == 1)
                 simpleForm.addButton(server.getId() + ": " + server.getName(), ImageType.PATH, "textures/ui/World");
         });
 
-        OnlineServerData copyServers = servers;
+        LinkedList<OnlineServerEntry.Server> copyServerList = serverList;
         simpleForm.send(player, (target, form, data) -> {
             if (data == -1) {
                 sendTransferHomeWindow(target);
                 return;
             }
 
-            copyServers.getServerList().forEach(server -> {
+            copyServerList.forEach(server -> {
                 if (server.getId() == Integer.parseInt(form.getResponse().getClickedButton().getText().split(":")[0])) {
                     sendTransferConfirmWindow(target, server);
                 }
@@ -96,7 +96,7 @@ public class FormHandler {
                     if (checkContent(form.getResponse())) {
                         try {
                             TransferPlugin.getInstance().transfer(target, form.getResponse().getInputResponse(1), Integer.parseInt(form.getResponse().getInputResponse(2)));
-                            HistoryDataProvider.getInstance().addHistoryData(target, form.getResponse().getInputResponse(1), Integer.parseInt(form.getResponse().getInputResponse(2)));
+                            HistoryDataHandler.getInstance().addHistoryData(target, form.getResponse().getInputResponse(1), Integer.parseInt(form.getResponse().getInputResponse(2)));
                         } catch (NumberFormatException e) {
                             target.sendMessage("[Transfer] ポート番号は数値を入力してください。");
                         }
@@ -110,8 +110,8 @@ public class FormHandler {
         SimpleForm simpleForm = new SimpleForm()
                 .setTitle("Transfer")
                 .setContent("移動先のサーバーを選択");
-        if (HistoryDataProvider.getInstance().getHistoryDataMap(player) != null) {
-            HistoryDataProvider.getInstance().getHistoryDataMap(player).values().forEach((historyData) -> {
+        if (HistoryDataHandler.getInstance().getHistoryDataMap(player) != null) {
+            HistoryDataHandler.getInstance().getHistoryDataMap(player).values().forEach((historyData) -> {
                 simpleForm.addButton(historyData.getName() + "\n" + historyData.getAddress() + ":" + historyData.getPort());
             });
         } else {
@@ -124,7 +124,7 @@ public class FormHandler {
                 sendTransferHomeWindow(target);
                 return;
             }
-            sendTransferConfirmWindow(target, HistoryDataProvider.getInstance().getHistoryDataMap(target).get(form.getResponse().getClickedButton().getText().split("\n")[1].replace(".", "-").replace(":", "-")));
+            sendTransferConfirmWindow(target, HistoryDataHandler.getInstance().getHistoryDataMap(target).get(form.getResponse().getClickedButton().getText().split("\n")[1].replace(".", "-").replace(":", "-")));
         });
     }
 
@@ -136,7 +136,7 @@ public class FormHandler {
                 .setButton2("やめる")
                 .send(player, (target, form, data) -> {
                     if (form.getResponse().getClickedButtonId() == 0) {
-                        HistoryDataProvider.getInstance().removePlayerData(target);
+                        HistoryDataHandler.getInstance().removePlayerData(target);
                         sendTransferHomeWindow(target, TextFormat.YELLOW + "移動履歴を削除しました。");
                     } else {
                         sendTransferHomeWindow(target);
@@ -157,7 +157,7 @@ public class FormHandler {
                 });
     }
 
-    public void sendTransferConfirmWindow(Player player, OnlineServerData.Server server) {
+    public void sendTransferConfirmWindow(Player player, OnlineServerEntry.Server server) {
         String categoryLabel = "";
         try {
             if (!server.getCategories().equals("[]")) {
@@ -177,7 +177,7 @@ public class FormHandler {
                     if (form.getResponse().getClickedButtonId() == 0) {
                         LinkedList<String> serverAddressList = new LinkedList<>();
                         try {
-                            ServerListLoader.getInstance().getOnlineServerData().getServerList().forEach(s -> {
+                            ServerListLoader.getInstance().getOnlineServerData().forEach(s -> {
                                 serverAddressList.add(s.getAddress());
                             });
                         } catch (Exception e) {
@@ -186,7 +186,7 @@ public class FormHandler {
                         }
                         if (serverAddressList.contains(server.getAddress())) {
                             TransferPlugin.getInstance().transfer(target, server.getAddress(), server.getPort());
-                            HistoryDataProvider.getInstance().addHistoryData(target, server.getAddress(), server.getPort(), server.getName());
+                            HistoryDataHandler.getInstance().addHistoryData(target, server.getAddress(), server.getPort(), server.getName());
                         } else {
                             sendTransferHomeWindow(player, TextFormat.RED + "サーバーがオフラインです。");
                         }
@@ -205,7 +205,7 @@ public class FormHandler {
                 .send(player, (target, form, data) -> {
                     if (form.getResponse().getClickedButtonId() == 0) {
                         TransferPlugin.getInstance().transfer(target, historyData.getAddress(), historyData.getPort());
-                        HistoryDataProvider.getInstance().addHistoryData(target, historyData.getAddress(), historyData.getPort(), historyData.getName());
+                        HistoryDataHandler.getInstance().addHistoryData(target, historyData.getAddress(), historyData.getPort(), historyData.getName());
                     } else {
                         sendSeeTransferHistoryWindow(target);
                     }
@@ -216,7 +216,7 @@ public class FormHandler {
         return !response.getInputResponse(1).equals("") && !response.getInputResponse(2).equals("");
     }
 
-    public static FormHandler getInstance() {
+    public static FormManager getInstance() {
         return instance;
     }
 }
