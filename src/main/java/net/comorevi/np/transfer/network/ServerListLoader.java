@@ -26,8 +26,8 @@ public class ServerListLoader {
     public String getCategoryLabels(OnlineServerEntry.Server server) throws Exception {
         CategoryEntry categoryData = getCategoryData();
         StringBuilder sb = new StringBuilder();
-        Arrays.asList(server.getCategories().substring(1, server.getCategories().length() -1).split(",")).forEach(categoryId -> {
-            sb.append(getCategoryLabelById(categoryData, Integer.parseInt(categoryId))).append(", ");
+        server.getCategories().forEach(categoryId -> {
+            sb.append(getCategoryLabelById(categoryData, Integer.parseInt(String.valueOf(categoryId)))).append(", ");
         });
         if (sb.length() != 0) sb.deleteCharAt(sb.lastIndexOf(","));
         return sb.toString();
