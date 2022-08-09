@@ -53,7 +53,7 @@ public class FormManager {
         try {
             serverList = ServerListLoader.getInstance().getOnlineServers();
         } catch (Exception e) {
-            sendTransferHomeWindow(player, TextFormat.RED + "サーバーリストへの接続に失敗しました。");
+            sendTransferHomeWindow(player, TextFormat.RED + "サーバーリストの読み込みに失敗しました。");
             return;
         }
 

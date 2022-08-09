@@ -1,5 +1,6 @@
 package net.comorevi.np.transfer.network.entry;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class OnlineServerEntry extends GsonEntry {
@@ -15,7 +16,7 @@ public class OnlineServerEntry extends GsonEntry {
         private String address;
         private int port;
         private String description;
-        private String categories;
+        private ArrayList<Integer> categories;
         private int is_verified;
         private int is_display_address;
 
@@ -39,7 +40,7 @@ public class OnlineServerEntry extends GsonEntry {
             return description;
         }
 
-        public String getCategories() {
+        public ArrayList<Integer> getCategories() {
             return categories;
         }
 

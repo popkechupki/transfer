@@ -6,7 +6,7 @@
 
     <groupId>net.comorevi</groupId>
     <artifactId>transfer</artifactId>
-    <version>1.2</version>
+    <version>1.2.1</version>
 
     <repositories>
         <repository>
